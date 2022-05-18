@@ -21,7 +21,7 @@ int main() {
 			minutoTotalInicial = (24*60 - horaInicial*60 - minutoInicial);
 			//printf("%d\n", minutoTotalInicial);
 			minutoTotalFinal = (horaFinal*60 + minutoFinal);
-			horaDuracao = (minutoTotalInicial + minutoTotalFinal)/60;	
+			horaDuracao = (minutoTotalFinal + minutoTotalInicial)/60;	
 			minutoDuracao = minutoFinal - minutoInicial;	
 		}
 	}
@@ -31,5 +31,5 @@ int main() {
 		horaDuracao = (minutoTotalFinal - minutoTotalInicial)/60;
 		minutoDuracao = (minutoTotalFinal - minutoTotalInicial)%60;
 	}
-		printf("%d:%d", horaDuracao, minutoDuracao);
+		printf("%02d:%02d", horaDuracao, minutoDuracao);
 }
