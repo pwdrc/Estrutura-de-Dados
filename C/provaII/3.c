@@ -24,5 +24,9 @@ int main() {
     c = ponto1.x * ponto2.y - ponto2.x * ponto1.y;
 
     printf("Equacao da reta:\n");
-    printf("%dx + %dy + %d = 0", a, b, c);
+    printf("%dx + %dy + %d = 0\n", a, b, c);
+    printf("Portanto:\n");
+    if(b != 0)
+        printf("y = (%dx + %d)/%d\n", a, c, b);
+    else printf("Nao sabo dividir pro zero, meu bacano...");
 }
