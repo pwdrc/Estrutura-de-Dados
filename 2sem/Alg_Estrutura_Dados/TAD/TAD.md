@@ -1,6 +1,6 @@
 # TAD - Tipo Abstrato de Dados
 
-## Intro e Conceitos Gerais
+## Intro, Nomenclaturas e Conceitos Gerais
 
 - **Tipos de dados**:
 	- relacionado à linguagem de programação
@@ -14,6 +14,17 @@
 - **Estrutura de Dados (ED)**:
 	- modo particular de armazenar e organizar dados
 	- arranjo, lista ligada, árvore ...
+
+- **[Chave - tipo chave](https://pt.wikipedia.org/wiki/Chave_(computa%C3%A7%C3%A3o))**:
+	- em um banco de dados, **chave** é um valor que permite identificar registros em um repositório de dados
+	- geralmente, é um dos campos do próprio registro
+
+- **[Registro](https://pt.wikipedia.org/wiki/Registro_(ci%C3%AAncia_da_computa%C3%A7%C3%A3o))**
+	- está entre as estruturas de dados mais simples
+	- é um valor que contém outros valores
+	- exemplo: uma data pode ser armazenada como um registro contendo os campos ano, mês e dia
+
+
 
 ### TADs em C
 
@@ -108,6 +119,8 @@ void exibirLista(LISTA * l) {
 
 **III) Buscar elemento**
 
+A) Sem sentinela!
+
 ```
 int buscaSequencial(LISTA * l, TIPOCHAVE ch) {
 	for(int i = 0; i < l->numeroDeElementos; i++) {
@@ -119,6 +132,29 @@ int buscaSequencial(LISTA * l, TIPOCHAVE ch) {
 	return -1;
 }
 ```
+
+B) Com sentinela!
+
+- elemento extra (um registro)
+- inserido no final da lista
+- contém a chave do elemento buscado
+- problema: se não houver espaço?
+	- cria-se a lista com uma posição extra, que nunca terá um registro válido
+	- basta alterar na modelagem: "... RGISTRO A[MAX+1]; ..."
+```
+int buscaSentinela(LISTA *l, TIPOCHAVE ch) {
+	int i = 0;
+	l->A[l->numeroDeElementos].chave = ch;
+	while(l->A[i].chave != ch)
+		i++;
+	if(i == l->numeroDeElementos)
+		return -1;
+	else return i;
+}
+```
+
+C) Busca binária = O(log n) - só serve quando os **elementos estão ordenados**
+
 **IV) Iserir elemento**
 
 - lista não estiver cheia e índice passado pelo usuário for válido: desloca todos os elemetnso posteriores uma posição a direita; insere o elemento; soma um no numero de elementos; retorna true; caso contrário, false
@@ -157,6 +193,44 @@ void reinicializarLista(LISTA * l) {
 	l->numeroDeElementos = 0;
 }
 ```
+
+##### Listas Sequenciais Ordenadas
+
+**Inserção**
+
+```
+bool inserirElementoListaOrdenada(LISTA *l, REGISTRO r) {
+	if(l->numeroDeElementos >= MAX) return false;
+	int pos = l->numeroDeElementos;
+	while(pos > 0 && l->A[pos-1].chave > r.chave) {
+		l->A[pos] = l->A[pos-1];
+		pos--;
+	}
+	l->A[pos] = r;
+	l->numeroElemento++;
+}
+```
+
+**Busca Binária - O(log n)**
+```
+int buscaBinaria(LISTA * l, TIPICHAVE ch) {
+	int esq, dir, meio;
+	esq = 0; // primeira posicao olhada
+	dir = l->numeroDeElementos-1; // ultima posicao olhada
+	while(esq <= dir) {
+		meio = ((esq+dir)/2);
+		if(l->A[meio].chave == ch)
+			return meio; // se o elemento do meio for o elemento buscado, retorna
+		else {
+			if(l->A[meio].chave < ch)
+				esq = meio + 1;
+			else dir = meio + 1;
+		}
+	}
+	return -1;
+}
+```
+**Obs.: embora a busca na exclusão fique mais eficiente com a busca binária, ainda num vetor ordenado, os elementos devem ser deslocado a fim de ocupar o espaço deixado pelo elemento excluído, não reduzindo a complexidade total do algoritmo**
 
 #### Dinâmica - implementações
 
