@@ -156,6 +156,7 @@ bool excluir(TIPOCHAVE ch, LISTA * l) {
 void reinicializarLista(LISTA * l) {
 	l->numeroDeElementos = 0;
 }
+```
 
 #### Dinâmica - implementações
 
