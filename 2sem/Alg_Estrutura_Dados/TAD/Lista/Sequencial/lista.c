@@ -27,3 +27,15 @@ int inserirElementoNoFim(tipoLista *l, tipoElemento e) {
     l->elementos[l->numeroDeElementos] = e;
     l->numeroDeElementos++;
 }
+
+int remover(tipoLista *l, tipoChave ch) {
+    int posicao = buscaElemento(l, ch);
+    if(posicao == -1)
+        return -1;
+    for(int i = posicao; i < l->numeroDeElementos; i++) {
+        l->elementos[i] = l->elementos[i+1];
+    l->numeroDeElementos--; // atualiza a quantidade de elementos da lista para um a menos
+    return 1;
+    }
+
+}

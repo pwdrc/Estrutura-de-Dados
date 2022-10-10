@@ -16,6 +16,10 @@ int main() {
     int buscaElementoTrinta = buscaElemento(&lista, 30);
     printf("%d\n", buscaElementoTrinta);
 
+    remover(&lista, 5);
+    tamanhoDaLista(&lista);
 
+    remover(&lista, 3);
+    tamanhoDaLista(&lista);
 
 }
