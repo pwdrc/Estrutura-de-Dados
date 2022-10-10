@@ -244,47 +244,145 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 
 ```
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h> // malloc()
 
+typedef int TIPOCHAVE;
+
+typedef struct {
+	TIPOCHAVE chave;
+	// outros campos ...
+} REGISTRO; // ou tipo do "elemento"
+
+typedef struct aux {
+	REGISTRO r;
+	struct aux* prox;
+} ELEMENTO; // ou nó
+
+typedef ELEMENTO *PONT;
+
+typedef struct {
+	PONT inicio; // ponteiro para o primeiro elemento
+} LISTA;
+
+**Retornar o número de elemento**
+
+- percorrer o número de elementos
+
+int tamanho(LISTA * l) {
+	PONT posicao = l->inicio;
+	int tam = 0;
+	while(posicao != NULL) {
+		tam++;
+		posicao = posicao->prox;
+	}
+	return tam;
+}
+```
+
+**Buscar elemento**
+
+- não suporta busca binária - busca sequencial - complexidade O(n)
+- recebe uma chave
+- retorna o endereço do elemento (se existir)
+- retorna null caso não encontre
+
+a) busca sequencial
+
+```
+PONT buscaSequencial(LISTA * l, TIPOCHAVE ch) {
+	PONT posicao = l->inicio;
+	while(posicao != NULL) {
+		if(posicao->r.chave == ch) return posicao;
+		posicao = posicao->prox;
+	}
+	return NULL;
+}
+```
+
+b) busca em lista ordenada pelos valores das chaves dos registros
+
+```
+PONT buscaSeqOrd(LISTA * l, TIPOCHAVE ch) {
+	PONT posicao = l->inicio;
+	while(posicao != NULL && posicao->r.chave < ch) posicao = posicao->prox;
+	if(posicao != NULL && posicao->r.chave == ch) return posicao;
+	return NULL;
+}
 
 ```
 
-**Criar**
-- Pré/pós-condições: nenhuma/estrutura de dados é inicializada
+**Inserção de um elemento**
 
-Antes		Depois
-L -> ?		L -> NULL
+- inserção de ordenada pelo valor da chave
+- não se permitirá a inserção de elementos repetidos
+- é preciso identificar entre quais elementos o novo será inserido
+- é preciso alocar memória para o novo elemento
+- é preciso saber quem será o predecessor do elemento
+- função auxiliar
 
-**Inserir (primeira posição)**
-- pré/pós-condição: memória disponível/elemento inserido na primeira posição
+```
+PONT buscaSequencialExc(LISTA * l, TIPOCHAVE ch, PONT * ant) {
+	*ant = null;
+	PONT atual = l->inicio;
+	while((atual != NULL) && (atual->r.chave < ch)) {
+		*ant = atual;
+		atual = atual->prox;
+	}
+	if((atual != NULL) && (atual->r.chave == ch))
+		return atual;
+	return NULL;
+}
 
-Antes		Depois
-L -> null	L -> elemento -> null
-
-P -> item = item;
-P -> prox = \*L;
-\*L = P;
-
-E se a lista estiver vazia?
-
-**Inserir (última posição)**
--  
-
-
-**Inserir em qualquer posição**
-- P -> novo = ;
-
-
-**Pesquisar elemento**
-- pré/pós-condição: nenhuma/retorna posição do elemento ou um valor caso não exista
-
-E se a lista for ordenada?
+int inserirElementoListOrdenada(LISTA * l, REGISTRO r) {
+	TIPOCHAVE ch = r.chave;
+	PONT ant, i;
+	i = buscaSequencialExc(l, ch, &ant);
+	if(i != NULL) return false // significa que o elemento já existe na lista
+	i = (PONTO) malloc(sizeof(ELEMENTO));
+	i->r = r;
+	if(ant == NULL) {
+		i->prox = l->inicio;
+		i->inicio = i;
+	} else {
+		i->prox = ant->prox;
+		ant->prox = i;
+	}
+	return 1; // "true"
+}
+```
 
 **Remover elemento por posição**
-- pré/pós-condição: fornecer uma posição válida/o elemento da posição é removido
 
-if(P -> prox == Posição)
-	P.prox = Posição.prox
+- passar a chave do elemento que se quer excluir
+
+```
+int removerElemento(LISTA * l, TIPOCHAVE ch) {
+	PONT ant, i;
+	i = buscaSequencialExc(l, cha, &ant);
+	if(i == NULL) return 0; // elemento não existe
+	if(ant == NULL) l->inicio = i->prox; // se ant == null, é o primeiro elemento da lista, então o primeiro elemento passa a ser o segundo
+	else ant->prox = i->prox;
+	free(i);
+	return 1;
+}
+```
+
+**Zerar a lista**
+
+- criar uma variável auxiliar antes de dar "free" no endereço
+- se fizer sem auxiliar, perde o conteúdo do endereço, incluíndo quais os proximos elementos da lista
+
+```
+void zerarLista(LISTA * l) {
+	PONT endereço = l->inicio;
+	while(endereco != NULL) {
+		PONT apagar = endereco;
+		endereco = endereco->prox;
+		free(apagar);
+	}
+	l->inicio = NULL;
+}
+```
 
 ## Referências
 
