@@ -15,5 +15,7 @@ typedef struct {
 } tipoLista;
 
 void criarLista(tipoLista *l);
+void tamanhoDaLista(tipoLista *l);
+int inserirElemento(tipoLista *l, tipoElemento e);
 
 #endif
