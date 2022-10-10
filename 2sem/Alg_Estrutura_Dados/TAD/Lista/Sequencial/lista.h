@@ -10,12 +10,13 @@ typedef struct {
 } tipoElemento;
 
 typedef struct {
-    tipoElemento elementos[MAX];
+    tipoElemento elementos[MAX+1];
     int numeroDeElementos;
 } tipoLista;
 
 void criarLista(tipoLista *l);
 void tamanhoDaLista(tipoLista *l);
 int inserirElemento(tipoLista *l, tipoElemento e);
+int buscaElemento(tipoLista *l, tipoChave ch);
 
 #endif

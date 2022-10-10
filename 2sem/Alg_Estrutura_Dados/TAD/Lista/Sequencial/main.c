@@ -10,6 +10,12 @@ int main() {
     inserirElementoNoFim(&lista, 2);
     inserirElementoNoFim(&lista, 3);
     tamanhoDaLista(&lista);
+    
+    int buscaElementoUm = buscaElemento(&lista, 1);
+    printf("%d\n", buscaElementoUm);
+    int buscaElementoTrinta = buscaElemento(&lista, 30);
+    printf("%d\n", buscaElementoTrinta);
+
 
 
 }
