@@ -232,7 +232,22 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 ```
 **Obs.: embora a busca na exclusão fique mais eficiente com a busca binária, ainda num vetor ordenado, os elementos devem ser deslocado a fim de ocupar o espaço deixado pelo elemento excluído, não reduzindo a complexidade total do algoritmo**
 
-#### Dinâmica - implementações
+
+### Lista Ligada (implementação dinâmica)
+
+#### Ideia geral
+
+- Um ponteiro para o primeiro elemento
+- cada elemento tem um ponteiro para indicar seu sucessor
+
+#### Modelagem
+
+```
+#include<stdio.h>
+#include<malloc.h>
+
+
+```
 
 **Criar**
 - Pré/pós-condições: nenhuma/estrutura de dados é inicializada
