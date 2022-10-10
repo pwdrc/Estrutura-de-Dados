@@ -39,3 +39,22 @@ int remover(tipoLista *l, tipoChave ch) {
     }
 
 }
+
+// só serve para lista ordenada!!!
+int buscaBinaria(tipoLista *l, tipoChave ch) {
+    int esq, dir, meio;
+    esq = 0;
+    dir = l->numeroDeElementos - 1;
+    
+    while(esq <= dir) {
+        meio = ((esq+dir)/2);
+        if(l->elementos[meio].chave == ch)
+            return meio;
+        else {
+            if(l->elementos[meio].chave < ch)
+                esq = meio + 1;
+            else dir = meio + 1;
+        }
+    }
+
+}

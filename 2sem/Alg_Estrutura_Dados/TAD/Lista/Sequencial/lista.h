@@ -20,4 +20,7 @@ int inserirElemento(tipoLista *l, tipoElemento e);
 int buscaElemento(tipoLista *l, tipoChave ch);
 int remover(tipoLista *l, tipoChave ch);
 
+// só serve para lista ordenada!!! O(log n)
+int buscaBinaria(tipoLista *l, tipoChave ch);
+// só serve para lista ordenada!!! O(log n)
 #endif
