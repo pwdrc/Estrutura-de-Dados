@@ -199,7 +199,7 @@ void reinicializarLista(LISTA * l) {
 **Inserção**
 
 ```
-bool inserirElementoListaOrdenada(LISTA *l, REGISTRO r) {
+bool inserirElementoListaOrdenada(LISTA * l, REGISTRO r) {
 	if(l->numeroDeElementos >= MAX) return false;
 	int pos = l->numeroDeElementos;
 	while(pos > 0 && l->A[pos-1].chave > r.chave) {
@@ -233,15 +233,41 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 **Obs.: embora a busca na exclusão fique mais eficiente com a busca binária, ainda num vetor ordenado, os elementos devem ser deslocado a fim de ocupar o espaço deixado pelo elemento excluído, não reduzindo a complexidade total do algoritmo**
 
 
-### Lista Ligada (implementação dinâmica)
+### Lista Ligada (linked list) (implementação dinâmica)
 
 #### Ideia geral
 
+- é uma "array" dinâmica
+- as operações de inserção e remoção são menos custosas
 - Um ponteiro para o primeiro elemento
 - cada elemento tem um ponteiro para indicar seu sucessor
 
+- **desvantagens:**
+	- não suporta busca binária
+	- espaço extra na memória para o ponteiro
+	- "no chace friendly"
+
+#### Tipos
+
+- lista ligada simples (simple linked list)
+- lista duplamente ligada (double linked list)
+- lista ligada circular (circular linked list)
+
 #### Modelagem
 
+- **representação:**
+	- um ponteiro para o primeiro nó da lista
+	- o primeiro nó é chamado de cabeça (head)
+	- se a lista está vazia, então o valor do ponteiro da cabeça é nulo (null)
+	- cada nó da lista consiste em ao menos duas partes: data (int, string, etc...) e ponteiro (para o próximo nó ou um endereço para outro ponteiro)
+	- em C, um nó pode ser representado com structs
+```
+// a linked list node
+struct Node {
+	int data;
+	struct Node* next;
+}
+```
 ```
 #include<stdio.h>
 #include<stdlib.h> // malloc()
@@ -258,16 +284,24 @@ typedef struct aux {
 	struct aux* prox;
 } ELEMENTO; // ou nó
 
-typedef ELEMENTO *PONT;
+typedef ELEMENTO * PONT;
 
 typedef struct {
 	PONT inicio; // ponteiro para o primeiro elemento
 } LISTA;
 
+**Criar/Inicializar Lista Dinâmica**
+```
+void criaLista(LISTA * l) {
+	l->prox = NULL;
+}
+```
+
 **Retornar o número de elemento**
 
 - percorrer o número de elementos
 
+```
 int tamanho(LISTA * l) {
 	PONT posicao = l->inicio;
 	int tam = 0;

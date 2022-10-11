@@ -1,33 +1,27 @@
 #ifndef LISTA_H
 #define LISTA_H
 
-typedef int tipo_chave;
+// modelagem do TAD
+typedef int tipo_valor; // chave
 
 typedef struct {
-    tipo_chave chave;
-    // outros dados
-} tipo_elemento;
-
-typedef struct tipo_no *tipo_apontador;
+    tipo_valor valor;
+    // outros atributos
+} tipo_registro; // ou registro
 
 typedef struct {
-    tipo_elemento e;
-    tipo_apontador proximo;
+    tipo_registro r;
+    struct aux *prox;
 } tipo_no;
 
-// lista em si
+typedef tipo_no *apontador;
+
 typedef struct {
-    tipo_apontador inicio; // primeiro elemento e inicio da lista
-    //tipo_apontador ultimo; // também é possível definir um apontador para o último elemento
+    apontador primeiro;
+    // apontador ultimo;
 } tipo_lista;
 
-// operações
-int criarLista(tipo_lista *l);
-int inserir(tipo_lista *l, tipo_elemento e);
-void imprimirLista(tipo_lista *l);
-int remover(tipo_lista *l, tipo_chave ch);
-int vazia(tipo_lista *l);
-tipo_elemento pesquisar(tipo_lista *l, tipo_chave ch);
-void zerarLista(tipo_lista *l);
-
+// operações suportadas
+void criar(tipo_lista *l);
+void inserirTantoFaz(tipo_lista *l, tipo_registro r);
 #endif
