@@ -250,7 +250,7 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 - **desvantagens:**
 	- não suporta busca binária
 	- espaço extra na memória para o ponteiro
-	- "no chace friendly"
+	- "no cache friendly"
 
 #### Tipos
 
@@ -273,6 +273,8 @@ struct Node {
 	struct Node* next; // ponteiro para o proximo elemento da lista
 }
 ```
+
+-> um jeito mais complexo de fazer:
 
 ```
 #include<stdio.h>
@@ -313,6 +315,7 @@ void printList(Struct Node* n) {
 	}
 }
 ```
+
 **Retornar o número de elemento**
 
 - percorrer o número de elementos
@@ -437,44 +440,11 @@ void append(struct Node** head_ref, int new_data) {
 	return;
 }
 ```
+-> **Complexidade** 
+	- Tempo: O(n)
+	- pode ser otimizado para ser O(1), mantendo-se um ponteiro para indicar a raba da lista (tail)
 
-- inserção de ordenada pelo valor da chave
-- não se permitirá a inserção de elementos repetidos
-- é preciso identificar entre quais elementos o novo será inserido
-- é preciso alocar memória para o novo elemento
-- é preciso saber quem será o predecessor do elemento
-- função auxiliar
-
-```
-PONT buscaSequencialExc(LISTA * l, TIPOCHAVE ch, PONT * ant) {
-	*ant = null;
-	PONT atual = l->inicio;
-	while((atual != NULL) && (atual->r.chave < ch)) {
-		*ant = atual;
-		atual = atual->prox;
-	}
-	if((atual != NULL) && (atual->r.chave == ch))
-		return atual;
-	return NULL;
-}
-
-int inserirElementoListOrdenada(LISTA * l, REGISTRO r) {
-	TIPOCHAVE ch = r.chave;
-	PONT ant, i;
-	i = buscaSequencialExc(l, ch, &ant);
-	if(i != NULL) return false // significa que o elemento já existe na lista
-	i = (PONTO) malloc(sizeof(ELEMENTO));
-	i->r = r;
-	if(ant == NULL) {
-		i->prox = l->inicio;
-		i->inicio = i;
-	} else {
-		i->prox = ant->prox;
-		ant->prox = i;
-	}
-	return 1; // "true"
-}
-```
+			
 
 **Remover elemento por posição**
 
