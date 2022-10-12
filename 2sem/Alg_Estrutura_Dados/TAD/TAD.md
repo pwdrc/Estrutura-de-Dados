@@ -295,6 +295,7 @@ typedef ELEMENTO * PONT;
 typedef struct {
 	PONT inicio; // ponteiro para o primeiro elemento
 } LISTA;
+```
 
 **Criar/Inicializar Lista Dinâmica**
 ```
@@ -302,6 +303,7 @@ void criaLista(LISTA * l) {
 	l->prox = NULL;
 }
 ```
+
 **Imprimir Elementos**
 ```
 void printList(Struct Node* n) {
