@@ -242,6 +242,11 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 - Um ponteiro para o primeiro elemento
 - cada elemento tem um ponteiro para indicar seu sucessor
 
+- **Complexidade**
+	- Busca: O(n)
+	- Inserção: O(1)
+	- Remoção: O(1)
+
 - **desvantagens:**
 	- não suporta busca binária
 	- espaço extra na memória para o ponteiro
@@ -264,10 +269,11 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 ```
 // a linked list node
 struct Node {
-	int data;
-	struct Node* next;
+	int data; // informação
+	struct Node* next; // ponteiro para o proximo elemento da lista
 }
 ```
+
 ```
 #include<stdio.h>
 #include<stdlib.h> // malloc()
@@ -296,7 +302,15 @@ void criaLista(LISTA * l) {
 	l->prox = NULL;
 }
 ```
-
+**Imprimir Elementos**
+```
+void printList(Struct Node* n) {
+	while (n !=NULL) {
+		printf("%d ", n->data);
+		n = n->next;
+	}
+}
+```
 **Retornar o número de elemento**
 
 - percorrer o número de elementos
@@ -345,7 +359,82 @@ PONT buscaSeqOrd(LISTA * l, TIPOCHAVE ch) {
 
 ```
 
-**Inserção de um elemento**
+**Inserção de um nó**
+
+- 3 maneiras:
+	- na frente da lista
+	- depois de um nó específico
+	- no final da lista
+
+- **Na frente**
+```
+// é preciso dar um ponteiro para um ponteiro (head_ref) para a cabeça da lista e um inteiro
+void push(struct Node** head_ref, int new_data)  {
+	// alocação dinâmica do novo nó
+	struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
+
+	// inserir dado
+	new_node->data = new_data;
+
+	// fazer o ponteiro de proximo do novo nó ser a cabeça
+	new_node->next = (*head_ref);
+	(*head_ref)  = new_node;
+}
+```
+
+- **Depois de um dado nó**
+```
+void insertAfter(struct Node* prev_node, int new_data) {
+	// 1 - verificar se o nó dado aponta para NULL
+	if(prev_node == NULL)
+		printf("o nó anterior não pode ser nulo\n");
+		return;
+
+	// 2 - alocar o novo nó
+	struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+
+	// 3 - inserir dado
+	new_node->data = new_data;
+
+	// fazer o "proximo" do novo nó ser o proximo do nó dado
+	new_node->next = prev_node->next;
+
+	// apontar o "proximo" do nó dado para o novo nó
+	prev_node->next = new_node;
+}
+```
+
+- **No final da lista**
+```
+void append(struct Node** head_ref, int new_data) {
+
+	// 1 alocar o novo nó
+	struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+
+	// 2 criar um apontador para o último
+	struct Node * last = * head_ref;
+
+	// 3 atribuir valor do dado
+	new_node->data = new_data;
+
+	// 4 proximo do novo nó apontar para nulo
+	new_node->next = NULL;
+
+	// 5 se a lista estiver vazia, o novo_nó é também a cabeça (head)
+	if(*head_ref == NULL) {
+		*head_ref = new_node;
+		return;
+	}
+
+	// 6 se não estiver vazia, percorrer até o último nó
+	while(last->next != NULL)
+		last = last->next;
+
+	// 7 apontar o proximo do ultimo nó para o novo nó
+	last->next = new_node;
+	return;
+}
+```
 
 - inserção de ordenada pelo valor da chave
 - não se permitirá a inserção de elementos repetidos
