@@ -57,3 +57,25 @@ void ifim(tipoLista *l, tipoChave ch) {
     ultimo->proximo = novo;
     return;
 }
+
+void remover(tipoLista *l, tipoChave ch) {
+    
+    tipoApontador anterior, i;
+    
+    i = buscar(l, ch);
+    
+    if(i == NULL) {
+        printf("Impossível remover o elemento %d, pois ele não está na lista.", ch);
+        return;
+    }
+}
+
+tipoApontador buscarParaRemover(tipoLista *l, tipoChave ch, tipoApontador ant) {
+    tipoApontador posicao = l->inicio;
+    ant = l->inicio;
+    while(posicao != NULL) {
+        if(posicao->elemento.chave == ch) return posicao;
+        posicao = posicao->proximo;
+    }
+    return NULL;
+}

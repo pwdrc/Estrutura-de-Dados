@@ -27,5 +27,7 @@ void criarLista(tipoLista *l);
 void imprimirLista(tipoLista *l);
 void icmc(tipoLista *l, tipoChave ch);
 void ifim(tipoLista *l, tipoChave ch);
+// void procurar(tipoLista *l, tipoChave);
+void remover(tipoLista *l, tipochave ch);
 
 #endif
