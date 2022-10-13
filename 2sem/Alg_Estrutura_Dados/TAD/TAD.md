@@ -258,6 +258,8 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 - lista duplamente ligada (double linked list)
 - lista ligada circular (circular linked list)
 
+
+### Lista Simplesmente Ligada
 #### Modelagem
 
 - **representação:**
@@ -344,11 +346,12 @@ a) busca sequencial
 ```
 PONT buscaSequencial(LISTA * l, TIPOCHAVE ch) {
 	PONT posicao = l->inicio;
+	if(posicao == NULL) return NULL;
 	while(posicao != NULL) {
 		if(posicao->r.chave == ch) return posicao;
 		posicao = posicao->prox;
 	}
-	return NULL;
+	return posicao;
 }
 ```
 
@@ -451,13 +454,49 @@ void append(struct Node** head_ref, int new_data) {
 - passar a chave do elemento que se quer excluir
 
 ```
-int removerElemento(LISTA * l, TIPOCHAVE ch) {
-	PONT ant, i;
-	i = buscaSequencialExc(l, cha, &ant);
-	if(i == NULL) return 0; // elemento não existe
-	if(ant == NULL) l->inicio = i->prox; // se ant == null, é o primeiro elemento da lista, então o primeiro elemento passa a ser o segundo
-	else ant->prox = i->prox;
-	free(i);
+int remover(tipoLista * l, tipoChave ch) {
+
+	tipoApontador p = pesquisar(l, ch); // precisa de uma funcao de pesquisa de elemento - ver acima: BUSCA SEQUENCIAL
+
+	int elemento_remover = removePosicao(l, p); // precisa de uma funcao auxiliar para remover a posicao
+
+	if(elemento_remover == 0) return; // posicao inválida, não é possível remover
+
+	
+}
+
+static int removePosicao(tipoLista * l, tipoApontador p) {
+
+	tipoApontador p = l->primeiro;
+	
+	if(p == NULL) return 0; // posicao invalida
+
+	// para um unico elemento
+	if(p == l->primeiro && p == l->ultimo) {
+		criar(l);
+		free(p);
+		return 1;
+	}
+
+	// remove do inicio
+	if(p == l->primeiro) {
+		l->primeiro = l->primeiro->proximo;
+		free(p);
+		return 1;
+	}
+
+	// remove do meio
+	tipoApontador aux = l->primeiro; // necessário o auxiliar para não perder a posição e/ou lista
+
+	while(aux->proximo != NULL && aux->proximo != p) {
+		aux = aux->proximo;
+	}
+
+	aux->proximo = p->proximo;
+
+	if(aux->primox == NULL) l->ultimo = aux
+
+	free(p);
 	return 1;
 }
 ```
@@ -479,6 +518,168 @@ void zerarLista(LISTA * l) {
 }
 ```
 
+**Inverter Lista**
+- complexidade:
+	- Tempo: O(n)
+	- Espaço: O(1)
+
+```
+void reverter(tipoLista * l, tipoChave ch) {
+
+	tipoApontador p = l->primeiro;
+
+	if (p == NULL) {
+		printf("Lista vazia.\n");
+		return;
+	}
+
+	if(p->proximo == NULL) {
+		printf("Lista unitária.\n");
+		return;
+	}
+
+	tipoApontador anterior = NULL;
+
+	while(p != NULL) {
+		p = l->primeiro->proximo;
+		l->primeiro->proximo = anterior;
+		anterior = l->primeiro;
+		l->primeiro = proximo;
+	}
+	l->primeiro = anterior;
+}
+```
+### Lista duplamente ligada (implementação dinâmica)
+
+#### Ideia Geral
+- similar à lista padrão
+- ponteiro para o nó anterior é adicionado na struct
+- operações de busca, remoção e inserção semelhantes à lista padrão, atentando-se ao ponteiro para o anterior
+- ponteiro para o fim pode ser conveniente
+
+- **desvantagens**:
+	- não suporta busca binária
+	- implementação mais difícil
+
+- **vantagem**:
+	- busca pelo elemento que se quer remover
+
+### Lista circular
+
+#### Ideia geral
+
+- pode ser estática ou dinâmica
+- estática: vetor; dinâmica: similar à lista ligada padrão
+
+**Estática**
+- ponteiros para início e fim
+- iterar elemento A e B ("fazer a volta"): **utiliza-se o MOD**(%)
+- busca binária: é preciso considerar que o início não é 0 e que é possível estourar o vetor -> **PIVO** = ((inicio+fim)/2)%(MAX_TAM);
+- dado inserido no fim: *fim = (fim+1)%(TAM)*
+- quando inicio == fim -> lista cheia
+
+**Dinâmica**
+- l->ultimo->proximo = l->primeiro ao invés de NULL
+- l->primeiro->anterior = l->ultimo (na duplamente ligada)
+
+## Pilas e Filhas, digo, Pilhas e Filas
+
+### Pilhas
+
+#### Geral 
+
+- são especializações de lista nas quais as inserções e remoções são realizadas na mesma extremidade - **TOPO**
+- tipo "LIFO" - Last In First Out (ultimo elemento inserido é o primeiro a ser removido)
+- o TOPO representa o ultimo elemento inserido
+- se TOPO == 0, a pilha está vazia
+
+#### Operações e noemclaturas
+
+- inserir = empilhar (PUSH)
+- remover = desempilhar (POP)
+- criar, topo, vazia, inverte, conta, imprime, etc.
+
+**Empilhar**
+```
+// estática
+s.topo = s.topo + 1;
+s[s.topo] = valor;
+
+// dinâmica
+void push(tipoPilha *p, tipoChave ch) {
+
+	tipoApontador novo = (tipoApontador)malloc(sizeof(tipoNo));
+	if(novo == NULL) // memória cheia
+		return;
+	novo->elemento.chave = ch;
+	novo->proximo = p->topo;
+	p->topo = novo;
+}
+```
+
+**Desempilhar**
+```
+// estática
+if SACK-EMPTY(S)
+	error "underflow"
+else S.topo = S.topo - 1;
+	return S[S.topo + 1];
+
+// dinâmica
+void pop(tipoPilha *p) {
+	if(vazia(p))
+		return;
+	tipoApontador aux = p->topo;
+	p->topo = p->topo->proximo;
+	free(aux);
+}
+```
+
+#### Aplicações
+- undo/redo (desfazer, refazer) etc.
+- notação pós-fixa/infixa
+
+### Filas
+#### Geral
+- lista cujas inserções e remoções são feitas em extremidades opostas (FRENTE/TRÁS ou HEAD/TAIL ou CABEÇA/RABA)
+- FIFO: First In First Out (primeiro a entrar é o primeiro a sair)
+- o elemento removido é sempre o primeiro elemento (início)
+- final - inicio + 1 => indica quantos elementos tem na fila
+
+#### Operações e nomenclaturas comuns
+- inserir = ENFILEIRAR (QUEUE)
+- remover = DESENFILEIRAR (DEQUEUE)
+- etc.
+
+**Enfileirar**
+```
+void enfileirar(tipoFila *f, tipoChave ch) {
+	tipoApontador novo = (tipoApontador)malloc(sizeof(tipoNo));
+	if(novo == NULL) return; // memória cheia
+	novo->elemento.chave = ch;
+	novo->proximo = NULL;
+	if(f->primeiro == NULL)
+		f->primeiro = novo;
+	else f->ultimo->proximo = novo;
+	f->ultimo = novo;
+	contador++; // opcional
+}
+```
+
+**Desenfileirar**
+```
+void desenfileirar(tipoFila *f) {
+	if(f->primeiro == NULL)
+		return; // fila vazia
+	if(f->primeiro == f->ultimo) {
+		f->ultimo = NULL;
+		return;
+	}
+	tipoApontador aux = f->primeiro;
+	f->primeiro = f->primeiro->proximo.
+	free(aux);
+}
+```
 ## Referências
 
 [UNIVESP](https://www.youtube.com/playlist?list=PLxI8Can9yAHf8k8LrUePyj0y3lLpigGcl)
@@ -488,3 +689,5 @@ void zerarLista(LISTA * l) {
 [diegofurts](https://github.com/diegofurts/alg1_bsi_2022)
 
 [Geeks for Geeks](https://www.geeksforgeeks.org/data-structures/)
+
+[laura](https://github.com/laurafcamargos/ED-I/blob/main/resum%C3%A3o.md)
