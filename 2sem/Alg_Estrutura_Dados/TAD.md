@@ -269,7 +269,6 @@ int buscaBinaria(LISTA * l, TIPICHAVE ch) {
 	- cada nó da lista consiste em ao menos duas partes: data (int, string, etc...) e ponteiro (para o próximo nó ou um endereço para outro ponteiro)
 	- em C, um nó pode ser representado com structs
 ```
-// a linked list node
 struct Node {
 	int data; // informação
 	struct Node* next; // ponteiro para o proximo elemento da lista
